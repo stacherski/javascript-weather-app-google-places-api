@@ -23,6 +23,10 @@
   box-shadow: 0 1em 2em rgba(0, 0, 0, 0.2);
   color: white;
   border-radius: 0.5em;
+  transition: all 500ms ease-in-out;
+}
+.weatherBox:hover {
+  background: cornflowerblue;
 }
 
 .weatherBox__currentTemperature {
@@ -33,4 +37,79 @@
   font-size: 2em;
   text-align: center;
   margin-bottom: 1em;
+}
+
+.cityWeather {
+  width: 90vw;
+  border-radius: 1em;
+  margin: 0 auto;
+  background: linear-gradient(
+    to bottom,
+    hsl(200, 100%, 50%),
+    hsl(150, 100%, 75%)
+  );
+  box-shadow: 0 1em 2em rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.cityWeather__header {
+  background: #eee;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.cityWeather__body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.cityWeather_body__status {
+  font-size: 2rem;
+}
+
+.cityWeather_body__location {
+  font-size: 4rem;
+}
+
+.cityWeather__details {
+  padding: 2rem;
+  gap: 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.cityWeather__details_detail {
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cityWeather__details_detail:nth-child(2) {
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: #000;
+}
+
+.cityWeather__details__detail__title {
+  font-size: 2rem;
+}
+.cityWeather__details__detail__value {
+  font-size: 3rem;
+}
+.cityWeather__search {
+  padding: 2rem;
+}
+.cityWeather__search input[type="text"] {
+  appearance: none;
+  width: 100%;
+  padding: 0.5em;
+  outline: none;
+  border: 1px solid #333;
+  font-size: 2rem;
 }

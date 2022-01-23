@@ -2,95 +2,72 @@
 
 import { config } from "./config.js";
 
-let weather = [];
-let cities = ["Wrocław", "Łódź", "acapulco", "Kopenhaga", "New York"];
-const app = document.getElementById("app");
+//select element to be used with places search
+const searchElement = document.querySelector("[data-search-box]");
+const searchBox = new google.maps.places.SearchBox(searchElement);
+//add listener
+searchBox.addListener("places_changed", () => {
+  //extract data
+  const place = searchBox.getPlaces()[0];
+  //return nothing when empty
+  if (place == null) return;
+  //find lat & lon
+  const latitude = place.geometry.location.lat();
+  const longitude = place.geometry.location.lng();
+  //fetch data
+  fetchData(latitude, longitude);
+});
 
 const resolveWindDirection = (direction) => {
-  if (direction >= 0 && direction <= 11) return "N";
-  if (direction >= 12 && direction <= 33) return "NNE";
-  if (direction >= 34 && direction <= 56) return "NE";
-  if (direction >= 57 && direction <= 78) return "ENE";
-  if (direction >= 79 && direction <= 101) return "E";
-  if (direction >= 102 && direction <= 123) return "ESE";
-  if (direction >= 124 && direction <= 146) return "SE";
-  if (direction >= 147 && direction <= 168) return "SSE";
-  if (direction >= 169 && direction <= 191) return "S";
-  if (direction >= 192 && direction <= 213) return "SSW";
-  if (direction >= 214 && direction <= 236) return "SW";
-  if (direction >= 237 && direction <= 258) return "WSW";
-  if (direction >= 259 && direction <= 281) return "W";
-  if (direction >= 282 && direction <= 303) return "WNW";
-  if (direction >= 304 && direction <= 326) return "NW";
-  if (direction >= 327 && direction <= 348) return "NNW";
-  if (direction >= 349 && direction <= 359) return "N";
+  const windDirections = [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+  ];
+  let val = Math.round(direction / 22.5 + 0.5);
+  return windDirections[val];
 };
+const weatherIcon = document.querySelector("[data-weather-icon]");
+const weatherForecast = document.querySelector("[data-weather-forecast]");
+const weatherLocation = document.querySelector("[data-weather-location]");
+const weatherWind = document.querySelector("[data-weather-wind]");
+const weatherTemp = document.querySelector("[data-weather-temp]");
+const weatherSun = document.querySelector("[data-weather-sun]");
+const cityWeather = (data) => {
+  console.log(data);
+  weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png"/>`;
+  weatherForecast.textContent = data.weather[0].main;
+  weatherLocation.textContent = data.name;
+  weatherWind.textContent =
+    `${data.wind.speed} m/s ` + resolveWindDirection(data.wind.deg);
+  weatherTemp.textContent = `${data.main.temp} °C`;
+  let sunrise = new Date(data.sys.sunrise * 1000);
+  let sunset = new Date(data.sys.sunset * 1000);
 
-const createWeatherBox = (data) => {
-  //define helpers
-  let elementName;
-  let elementContent;
-
-  //create div.weatherBox
-  let newDiv = document.createElement("div");
-  newDiv.classList.add("weatherBox");
-
-  //add currentTemperature
-  elementName = document.createElement("div");
-  elementName.classList.add("weatherBox__currentTemperature");
-  elementContent = document.createTextNode(data.main.temp + " °C");
-  elementName.appendChild(elementContent);
-  newDiv.appendChild(elementName);
-
-  //add cityName
-  elementName = document.createElement("div");
-  elementName.classList.add("weatherBox__cityName");
-  elementContent = document.createTextNode(data.name);
-  elementName.appendChild(elementContent);
-  newDiv.appendChild(elementName);
-
-  //add dateTime
-  elementName = document.createElement("div");
-  elementName.classList.add("weatherBox__dateTime");
-  let dateElement = new Date(data.dt * 1000);
-  elementContent = document.createTextNode(
-    dateElement.toLocaleDateString("pl-PL") +
-      " / " +
-      dateElement.getHours() +
-      ":" +
-      dateElement.getMinutes()
-  );
-  elementName.appendChild(elementContent);
-  newDiv.appendChild(elementName);
-
-  //add windSpeed
-  elementName = document.createElement("div");
-  elementName.classList.add("weatherBox__windSpeed");
-  elementContent = document.createTextNode(
-    "Wiatr " +
-      data.wind.speed +
-      " m/s z kierunku " +
-      resolveWindDirection(data.wind.deg)
-  );
-  elementName.appendChild(elementContent);
-  newDiv.appendChild(elementName);
-
-  // append box to div.app
-  app.appendChild(newDiv);
+  weatherSun.textContent = `${sunrise.getHours()}:${sunrise.getMinutes()} / ${sunset.getHours()}:${sunset.getMinutes()}`;
 };
 
 //fetch data from API
-const fetchData = (city) => {
+const fetchData = (lat, lon) => {
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=pl&units=metric&appid=${config.WEATHER_API_KEY}`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=pl&units=metric&appid=${config.OPENWEATHER_API_KEY}`
   )
     .then((res) => res.json())
     .then((data) => {
-      weather.push(data);
-      createWeatherBox(data);
+      cityWeather(data);
     })
     .catch((err) => console.error(err));
 };
-for (let i = 0; i < cities.length; i++) {
-  fetchData(cities[i]);
-}

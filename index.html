@@ -11,10 +11,57 @@
       href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
       rel="stylesheet"
     />
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzbikM86NTrTK3NmfaOJJ5sXs4JDfBYjU&libraries=places"
+    ></script>
     <script type="module" src="script.js"></script>
     <title>Javascript Weather App</title>
   </head>
   <body>
     <div id="app"></div>
+    <div class="cityWeather">
+      <div class="cityWeather__header">
+        <div class="cityWeather__header__icon" data-weather-icon>Icon</div>
+      </div>
+      <div class="cityWeather__body">
+        <div class="cityWeather_body__status" data-weather-forecast>
+          Forecast
+        </div>
+        <div class="cityWeather_body__location" data-weather-location>
+          Location
+        </div>
+      </div>
+      <div class="cityWeather__details">
+        <div class="cityWeather__details_detail">
+          <div class="cityWeather__details__detail__title">Wind</div>
+          <div class="cityWeather__details__detail__value" data-weather-wind>
+            Value
+          </div>
+        </div>
+        <div class="cityWeather__details_detail">
+          <div class="cityWeather__details__detail__title">Temperature</div>
+          <div class="cityWeather__details__detail__value" data-weather-temp>
+            Value
+          </div>
+        </div>
+        <div class="cityWeather__details_detail">
+          <div class="cityWeather__details__detail__title">
+            Sunrise / Sunset
+          </div>
+          <div class="cityWeather__details__detail__value" data-weather-sun>
+            Value
+          </div>
+        </div>
+      </div>
+      <div class="cityWeather__search">
+        <input
+          type="text"
+          data-search-box
+          class="citySearch"
+          placeholder="Enter location"
+        />
+      </div>
+    </div>
   </body>
 </html>
