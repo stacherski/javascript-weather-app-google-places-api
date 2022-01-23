@@ -56,8 +56,12 @@ const cityWeather = (data) => {
   weatherTemp.textContent = `${data.main.temp} °C`;
   let sunrise = new Date(data.sys.sunrise * 1000);
   let sunset = new Date(data.sys.sunset * 1000);
-
-  weatherSun.textContent = `${sunrise.getHours()}:${sunrise.getMinutes()} / ${sunset.getHours()}:${sunset.getMinutes()}`;
+  weatherSun.textContent = `${String(sunrise.getHours()).padStart(
+    2,
+    "0"
+  )}:${String(sunrise.getMinutes()).padStart(2, "0")} / ${String(
+    sunset.getHours()
+  ).padStart(2, "0")}:${String(sunset.getMinutes()).padStart(2, "0")}`;
 };
 
 //fetch data from API
