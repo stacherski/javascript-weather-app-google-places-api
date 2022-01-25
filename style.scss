@@ -1,0 +1,112 @@
+$font-stack: "Varela Round", cursive;
+$font-size: 16px;
+$boxshadow: 0 1em 2em rgba(0, 0, 0, 0.2);
+$gradient: linear-gradient(to bottom, hsl(200, 100%, 50%), hsl(150, 100%, 75%));
+$color-light-grey: #eee;
+$default-padding: 2rem;
+$mobile: 45em;
+//
+
+@mixin reset($font-stack, $font-size) {
+  box-sizing: border-box;
+  font-family: $font-stack;
+  font-size: $font-size;
+  padding: 0;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  @include reset($font-stack, $font-size);
+}
+
+.cityWeather {
+  width: 90vw;
+  border-radius: 1em;
+  margin: 0 auto;
+  background: $gradient;
+  box-shadow: $boxshadow;
+  overflow: hidden;
+
+  &__header {
+    background: $color-light-grey;
+    padding: $default-padding;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__body {
+    padding: $default-padding;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &__body__status,
+  &__details__detail__title {
+    font-size: $default-padding;
+  }
+
+  &__details__detail__value {
+    font-size: 3rem;
+  }
+  &__body__location {
+    font-size: 4rem;
+    @media screen and (max-width: $mobile) {
+      text-align: center;
+    }
+  }
+
+  &__details {
+    padding: $default-padding;
+    gap: $default-padding;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &__details__detail {
+    flex: 1 1 auto;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__details__detail:nth-child(2) {
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #000;
+  }
+  &__search {
+    padding: $default-padding;
+    input[type="text"] {
+      appearance: none;
+      width: 100%;
+      padding: 0.5em;
+      outline: none;
+      border: 1px solid #333;
+      font-size: 2rem;
+    }
+  }
+  @media screen and (max-width: $mobile) {
+    &__details {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    &__details__detail:nth-child(2) {
+      border-width: 1px 0;
+      border-style: solid;
+      border-color: #000;
+    }
+  }
+}
+@media screen and (max-width: $mobile) {
+  *,
+  *::before,
+  *::after {
+    font-size: 12px;
+  }
+}

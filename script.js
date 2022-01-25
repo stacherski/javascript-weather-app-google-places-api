@@ -37,7 +37,9 @@ const resolveWindDirection = (direction) => {
     "NW",
     "NNW",
   ];
+
   let val = Math.round(direction / 22.5 + 0.5);
+  direction === 360 ? (val = 0) : (val = val);
   return windDirections[val];
 };
 const weatherIcon = document.querySelector("[data-weather-icon]");
